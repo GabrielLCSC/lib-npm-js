@@ -1,0 +1,92 @@
+/**
+ * Calculates the average of a series of numbers.
+ *
+ * @param {number[]} data An array of numbers.
+ * @returns {number} The average of the numbers in the array.
+ */
+export default function average(data) {
+    if (!Array.isArray(data) || !data.every(Number.isFinite)) {
+      return NaN;
+    }
+    const sum = data.reduce((a, b) => a + b, 0);
+    return sum / data.length;
+  }
+  
+  
+  
+/**
+ * Calcule la médiane d'un tableau de nombres.
+ *
+ * La médiane est la valeur qui sépare la moitié supérieure des valeurs
+ * de la moitié inférieure. Si le tableau a un nombre pair d'éléments,
+ * la médiane est la moyenne des deux valeurs centrales.
+ *
+ * @param {number[]} numbers - Un tableau de nombres.
+ * @returns {number} - La médiane du tableau.
+ * @throws {Error} - Lance une erreur si le tableau est vide.
+ */
+
+export default function median(numbers) {
+    if (numbers.length === 0) {
+        throw new Error("Le tableau ne doit pas être vide");
+    }
+
+    numbers.sort((a, b) => a - b);
+
+    const half = Math.floor(numbers.length / 2);
+
+    if (numbers.length % 2 === 0) {
+        return (numbers[half - 1] + numbers[half]) / 2;
+    } else {
+        return numbers[half];
+    }
+}
+
+
+import average from '../src/average';
+
+describe('average()', () => {
+  it('should return NaN if the data is not an array', () => {
+    const data = 'foo';
+    expect(average(data)).toBeNaN();
+  });
+
+  it('should return NaN if the data is not an array of finite numbers', () => {
+    const data = ['foo', 1, 2];
+    expect(average(data)).toBeNaN();
+  });
+
+  it('should return the average of an array of numbers', () => {
+    const data = [1, 2, 3];
+    expect(average(data)).toBe(2);
+  });
+});
+
+
+
+import median  from "../src/median";('../src/median');
+
+describe('median', () => {
+    test('devrait calculer la médiane pour un tableau impair', () => {
+        const tableau = [5, 3, 8, 1, 2, 7];
+        const resultat = median(tableau);
+        expect(resultat).toBe(4);
+    });
+
+    test('devrait calculer la médiane pour un tableau pair', () => {
+        const tableau = [5, 3, 8, 1, 2, 7, 4];
+        const resultat = median(tableau);
+        expect(resultat).toBe(4);
+    });
+
+    test('devrait retourner la valeur centrale pour un tableau avec un seul élément', () => {
+        const tableau = [5];
+        const resultat = median(tableau);
+        expect(resultat).toBe(5);
+    });
+
+    test('devrait lancer une erreur pour un tableau vide', () => {
+        const tableau = [];
+        expect(() => median(tableau)).toThrow("Le tableau ne doit pas être vide");
+    });
+});
